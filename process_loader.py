@@ -6,8 +6,8 @@ from circularly_linked_list import CircularLinkedList
 
 class ProcessLoader:
 
-    def __init__(self):
-        self._processes = []
+    def __init__(self, path):
+        processes = ProcessLoader.load_processes(path)
 
     @staticmethod
     def open_file(path: str):
@@ -28,5 +28,4 @@ class ProcessLoader:
             burst = int(row[2])
             process = Process(pid, arrival, burst)
             cll.add_last(process)
-
         return cll
