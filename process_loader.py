@@ -1,6 +1,8 @@
 import csv
 from process import Process
 from typing import List
+from circularly_linked_list import CircularLinkedList
+
 
 class ProcessLoader:
 
@@ -13,15 +15,18 @@ class ProcessLoader:
             return list(csv.reader(csvfile, delimiter=","))
 
     @staticmethod
-    def load_processes(reader) -> List['Process']:
-        processes = []
-        next(reader) # skip the headers line
-        for row in reader:
+    def load_processes(path: str) -> CircularLinkedList:
+        reader = ProcessLoader.open_file(path)
+        cll: CircularLinkedList = CircularLinkedList()
+
+        iterator = iter(reader)
+        next(iterator)  # Skip header line
+
+        for row in iterator:
             pid = int(row[0])
             arrival = int(row[1])
             burst = int(row[2])
             process = Process(pid, arrival, burst)
-            processes.append(process)
-        return processes
+            cll.add_last(process)
 
-
+        return cll
